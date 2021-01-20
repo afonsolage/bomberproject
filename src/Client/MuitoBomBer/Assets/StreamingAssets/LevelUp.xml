@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <Experience Level="0" Value="0" />
+  <Experience Level="1" Value="120" />
+  <Experience Level="2" Value="240" />
+  <Experience Level="3" Value="480" />
+  <Experience Level="4" Value="960" />
+  <Experience Level="5" Value="1920" />
+  <Experience Level="6" Value="3840" />
+  <Experience Level="7" Value="7680" />
+  <Experience Level="8" Value="15360" />
+  <Experience Level="9" Value="30720" />
+  <Experience Level="10" Value="61440" />
+</config>

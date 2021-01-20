@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: dec92620161987b4dbfb506b50a99b8c
+timeCreated: 1535600263
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: OldSansBlack
+  fontNames:
+  - OldSansBlack
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0241D945-451F-4D76-B63D-7AC84450A77E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CommonLib</RootNamespace>
+    <AssemblyName>CommonLib</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugServer|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\DebugServer\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;_SERVER _DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugClient|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugClient\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;_CLIENT _DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugTest|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugTest\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;_SERVER _TEST</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.12\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NBug, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBug.1.2.2\lib\net40-client\NBug.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.3.17\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telegram.Bot, Version=14.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Telegram.Bot.14.10.0\lib\net45\Telegram.Bot.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DB\Connection.cs" />
+    <Compile Include="Grid\AStarFinder.cs" />
+    <Compile Include="Grid\GridManager.cs" />
+    <Compile Include="Grid\ObjectTypes.cs" />
+    <Compile Include="Messaging\Client\Common.cs" />
+    <Compile Include="Messaging\Client\LobbyServer.cs" />
+    <Compile Include="Messaging\Common\CommonServer.cs" />
+    <Compile Include="Messaging\Common\Common.cs" />
+    <Compile Include="Messaging\Common\Messages.cs" />
+    <Compile Include="Messaging\Common\Serializer.cs" />
+    <Compile Include="Messaging\Client\RoomServer.cs" />
+    <Compile Include="Messaging\DB\Common.cs" />
+    <Compile Include="Messaging\DB\LobbyServer.cs" />
+    <Compile Include="Messaging\DB\RoomServer.cs" />
+    <Compile Include="Messaging\Lobby\RoomServer.cs" />
+    <Compile Include="Networking\Client.cs" />
+    <Compile Include="Networking\Packet.cs" />
+    <Compile Include="Server\BaseServer.cs" />
+    <Compile Include="Server\LogComponent.cs" />
+    <Compile Include="Server\MainLoopServer.cs" />
+    <Compile Include="Test\Main.cs" />
+    <Compile Include="Util\AesHelper.cs" />
+    <Compile Include="Util\Checksum\CRC32.cs" />
+    <Compile Include="Util\DataHelper.cs" />
+    <Compile Include="Util\Logger.cs" />
+    <Compile Include="Grid\GridMap.cs" />
+    <Compile Include="Grid\GridObject.cs" />
+    <Compile Include="Util\Math.cs" />
+    <Compile Include="Networking\Server.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\StringUtils.cs" />
+    <Compile Include="Util\Telegram\TelegramHelper.cs" />
+    <Compile Include="Util\XMLHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == DebugServer COPY /Y /B *.dll ..\..\..\..\lib\
+
+if $(ConfigurationName) == DebugClient COPY /Y /B CommonLib.dll ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\CommonLib.dll
+if $(ConfigurationName) == DebugClient COPY /Y /B protobuf-net.dll ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\protobuf-net.dll
+if $(ConfigurationName) == DebugClient COPY /Y /B CommonLib.pdb ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\CommonLib.pdb</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

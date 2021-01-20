@@ -1,0 +1,16 @@
+#Root Rules
+*.log
+**/[Ll]ogs/
+**/[Ll]og/
+*.exe
+*.dll
+*.mdb
+src/Server/DBServer/\.vs/DBServer/v15/
+
+*.pdb
+
+src/Server/DBServer/DBServer/obj/Debug/
+/server/RoomServer2
+/server/RoomServer3
+/src/Client/MuitoBomBer/Assets/Scripts/Engine/Plugin/CommonLib.dll.mdb.meta
+/src/Server/RoomServer/CrashReports

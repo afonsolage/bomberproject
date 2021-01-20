@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+	<!-- Resource directory path -->
+	<Resource Path="..\Resources\" />
+	
+	<!-- Log configuration. -->
+	<Log Filter="4" />
+	
+	<!-- Telegram configuration. -->
+	<Telegram Enabled="0" Token="386917685:AAHVVi_WsKkXjYV_sk7RW9XNrW9hxC6R90s" GroupID="-274914989" LogFilter="1" />
+</Config>

@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\server",
+    "\\server\\DB",
+    "\\server\\DBServer",
+    "\\server\\LobbyServer",
+    "\\server\\RoomServer",
+    "\\src",
+    "\\src\\Common",
+    "\\src\\Common\\src",
+    "\\src\\Common\\src\\CommonLib",
+    "\\src\\Common\\src\\CommonLib\\Grid"
+  ],
+  "SelectedNode": "\\src\\Common\\src\\CommonLib\\Grid\\GridMap.cs",
+  "PreviewInSolutionExplorer": false
+}

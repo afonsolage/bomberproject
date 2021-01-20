@@ -1,0 +1,20 @@
+newmtl e_concrete
+map_Kd e_concrete_color_tb_ground_004_c.png
+Kd 1.0 1.0 1.0
+d 1.0
+
+newmtl e_concrete_2
+map_Kd e_concrete_color_tb_ground_005_c.png
+Kd 1.0 1.0 1.0
+d 1.0
+
+newmtl path
+map_Kd e_concrete_color_tb_ground_003_c1.png
+Kd 1.0 1.0 1.0
+d 1.0
+
+newmtl grass
+map_Kd e_grass_color_tb_grass_002_c.png
+Kd 1.0 1.0 1.0
+d 1.0
+

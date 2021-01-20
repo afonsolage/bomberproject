@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config>
+	<Application Version="0.01" />
+	<Resource Version="0.02" />
+	<Info ServerIP="127.0.0.1" ServerPort="9875" />
+	<Patch URL="http://192.168.1.113:81/Patch/" />
+</Config>
