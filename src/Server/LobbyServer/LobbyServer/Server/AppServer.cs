@@ -21,6 +21,7 @@ namespace LobbyServer.Server
     {
         private static readonly uint TICKS_PER_SECOND = 60;
 
+        /*
         enum StatusInfo
         {
             PlayerCount,
@@ -29,6 +30,7 @@ namespace LobbyServer.Server
 
             MAX, //Don't change this!
         }
+        */
 
         private Thread _rsThread;
         private ServerSocket<RoomServerSession> _rsServer;
@@ -71,10 +73,10 @@ namespace LobbyServer.Server
             if (!base.Init())
                 return false;
 
-            for(var i = 0; i < (int)StatusInfo.MAX; i++)
-            {
-                AddStatusInfo();
-            }
+            //for(var i = 0; i < (int)StatusInfo.MAX; i++)
+            //{
+            //    AddStatusInfo();
+            //}
 
             CLog.D("   _      ____  ____  ______     _______ ______ _______      ________ _____  ");
             CLog.D("  | |    / __ \\|  _ \\|  _ \\ \\   / / ____|  ____|  __ \\ \\    / /  ____|  __ \\ ");
@@ -295,9 +297,9 @@ namespace LobbyServer.Server
 
             _updateStatusInfoTimeout = 1f; //Update every 1 second
 
-            SetStatusInfo((int)StatusInfo.PlayerCount, string.Format("Players: {0}", _playerController.Count()));
-            SetStatusInfo((int)StatusInfo.RoomCount, string.Format("Rooms: {0}", _roomController.Count()));
-            SetStatusInfo((int)StatusInfo.RoomPlaying, string.Format("Rooms Playing: {0}", _roomController.ListAllRooms().Where(r => r.IsPlaying).Count()));
+            //SetStatusInfo((int)StatusInfo.PlayerCount, string.Format("Players: {0}", _playerController.Count()));
+            //SetStatusInfo((int)StatusInfo.RoomCount, string.Format("Rooms: {0}", _roomController.Count()));
+            //SetStatusInfo((int)StatusInfo.RoomPlaying, string.Format("Rooms Playing: {0}", _roomController.ListAllRooms().Where(r => r.IsPlaying).Count()));
         }
     }
 }

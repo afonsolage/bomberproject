@@ -268,7 +268,7 @@ namespace CommonLib.Util
             {
                 var formattedMsg = string.Format(message, parameters);
 
-                formattedMsg = formattedMsg.Replace("\r\n", "\t"); //Removes all line breaks. since this would break the console
+                //formattedMsg = formattedMsg.Replace("\r\n", "\t"); //Removes all line breaks. since this would break the console
 
                 writter(type, formattedMsg);
             }

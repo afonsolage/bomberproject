@@ -3,13 +3,13 @@ using CommonLib.DB;
 using CommonLib.Util;
 using CommonLib.Util.Telegram;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CommonLib.Server
 {
@@ -24,18 +24,14 @@ namespace CommonLib.Server
 
         private readonly Dictionary<string, string> _config;
 
-        protected Form _mainForm;
-        //protected ScrollBar _scrollBar;
-        protected LogComponent _logPanel;
-        protected TextBox _commandInput;
-        protected StatusBar _statusBar;
-
         protected bool _running;
         protected bool _closeRequested;
+        protected bool _logPaused;
 
         protected TelegramHelper _telegramHelper;
 
         protected Dictionary<int, string> _pendingStatusUpdate;
+        protected ConcurrentBag<Tuple<ConsoleColor, string>> _pendingLogs;
 
         public BaseServer(uint instanceId, string name, string version)
         {
@@ -43,16 +39,17 @@ namespace CommonLib.Server
             _name = name;
             _version = version;
             _config = new Dictionary<string, string>();
+            _logPaused = false;
 
             _dbConfigFile = "db.cfg";
 
             _closeRequested = false;
             _pendingStatusUpdate = new Dictionary<int, string>();
+            _pendingLogs = new ConcurrentBag<Tuple<ConsoleColor, string>>();
         }
 
         public virtual bool Init()
         {
-            CreateForm();
             SetupLog();
 
             SetupDump();
@@ -71,7 +68,6 @@ namespace CommonLib.Server
 
             // Attach exception handlers after all configuration is done
             AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
-            Application.ThreadException += NBug.Handler.ThreadException;
             TaskScheduler.UnobservedTaskException += NBug.Handler.UnobservedTaskException;
 
             // Check if path exits, if not, let to create.
@@ -92,7 +88,6 @@ namespace CommonLib.Server
         public virtual bool Start()
         {
             _running = true;
-            _mainForm.Show();
             return true;
         }
 
@@ -118,73 +113,6 @@ namespace CommonLib.Server
             }
         }
 
-        protected virtual void CreateForm()
-        {
-            _mainForm = new Form
-            {
-                Text = _name + " " + _version,
-                MinimumSize = new Size(800, 600)
-            };
-            _mainForm.FormClosed += OnFormClosed;
-
-            SetupFormComponents();
-        }
-
-        protected virtual void SetupFormComponents()
-        {
-            _logPanel = new LogComponent
-            {
-                Dock = DockStyle.Fill,
-                BackColor = Color.Black,
-                Font = new Font("Lucida Console", 12),
-                AutoScroll = true,
-            };
-
-            _commandInput = new TextBox
-            {
-                Dock = DockStyle.Bottom,
-                BackColor = Color.DarkSlateGray,
-                ForeColor = Color.White,
-                Font = new Font("Lucida Console", 12),
-
-                Multiline = true,
-                WordWrap = true
-            };
-            _commandInput.KeyDown += OnInputKeyDown;
-
-            //_mainForm.Controls.Add(_scrollBar);
-            _mainForm.Controls.Add(_logPanel);
-            _mainForm.Controls.Add(_commandInput);
-
-            _statusBar = new StatusBar()
-            {
-                Visible = false,
-                ShowPanels = true,
-            };
-
-            _mainForm.Controls.Add(_statusBar);
-        }
-
-        protected int AddStatusInfo()
-        {
-            _statusBar.Visible = true;
-
-            return _statusBar.Panels.Add(new StatusBarPanel()
-            {
-                BorderStyle = StatusBarPanelBorderStyle.None,
-                Text = "Fill the rest!",
-                AutoSize = StatusBarPanelAutoSize.Spring,
-            });
-        }
-
-        protected void SetStatusInfo(int index, string text)
-        {
-            lock (_pendingStatusUpdate)
-            {
-                _pendingStatusUpdate[index] = text;
-            }
-        }
-
         public void SetupTelegram(string serverName, string token, int groupID, CLogType logType)
         {
             _telegramHelper = new TelegramHelper();
@@ -193,98 +121,20 @@ namespace CommonLib.Server
 
         public void Quit()
         {
+            if (_closeRequested)
+                return;
+
             CLog.F("Quitting application...");
 
             CLog.Close();
 
             _closeRequested = true;
-        }
-
-        protected virtual void OnFormClosed(object sender, FormClosedEventArgs e)
-        {
             _running = false;
-            CLog.W("Shutting down application due to form close request...");
-            OnClose();
         }
 
         protected virtual void OnClose()
         {
-            
-        }
 
-        private List<string> _commandHistory = new List<string>();
-        private int _commandHistoryIdx;
-        private void AddCommandBuffer()
-        {
-            _commandHistory.Add(_commandInput.Text);
-            _commandHistoryIdx = _commandHistory.Count;
-        }
-
-        private void CommandBufferDown()
-        {
-            if (_commandHistoryIdx >= _commandHistory.Count - 1)
-            {
-                _commandInput.Text = "";
-                return;
-            }
-            _commandHistoryIdx++;
-            _commandInput.Text = _commandHistory[_commandHistoryIdx];
-
-            _commandInput.Focus();
-            _commandInput.SelectionStart = _commandInput.Text.Length + 1;
-        }
-
-        private void CommandBufferUp()
-        {
-            if (_commandHistoryIdx <= 0)
-            {
-                return;
-            }
-            _commandHistoryIdx--;
-            _commandInput.Text = _commandHistory[_commandHistoryIdx];
-
-            _commandInput.Focus();
-            _commandInput.SelectionStart = _commandInput.Text.Length + 1;
-        }
-
-        protected virtual void OnInputKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Up)
-            {
-                CommandBufferUp();
-            }
-            else if (e.KeyCode == Keys.Down)
-            {
-                CommandBufferDown();
-            }
-            else if (e.KeyCode == Keys.Enter && _commandInput.Text.Length > 1)
-            {
-                //Remove the \r\n characters
-                _commandInput.Text = _commandInput.Text.Replace("\r\n", "");
-
-                var parameters = _commandInput.Text.Split(' ');
-
-                if (parameters?.Length > 0)
-                {
-                    var name = parameters[0];
-
-                    if (name == "clear")
-                    {
-                        ClearConsole();
-                    }
-                    else if (name == "log")
-                    {
-                        HandleLogCommand(parameters);
-                    }
-                    else
-                    {
-                        AddCommandBuffer();
-                        ProcessCommand(parameters);
-                    }
-                }
-
-                _commandInput.Text = "";
-            }
         }
 
         private void HandleLogCommand(string[] command)
@@ -387,34 +237,42 @@ namespace CommonLib.Server
 
             CLog.writter = (CLogType type, string formattedMessage) =>
             {
-                Color lineColor = Color.Black;
+                ConsoleColor lineColor = ConsoleColor.Black;
 
                 switch (type)
                 {
                     case CLogType.Success:
-                        lineColor = Color.Green;
+                        lineColor = ConsoleColor.Green;
                         break;
                     case CLogType.Fatal:
-                        lineColor = Color.Purple;
+                        lineColor = ConsoleColor.Magenta;
                         break;
                     case CLogType.Error:
-                        lineColor = Color.Red;
+                        lineColor = ConsoleColor.Red;
                         break;
                     case CLogType.Warn:
-                        lineColor = Color.Yellow;
+                        lineColor = ConsoleColor.Yellow;
                         break;
                     case CLogType.Info:
-                        lineColor = Color.LightGray;
+                        lineColor = ConsoleColor.Gray;
                         break;
                     case CLogType.Debug:
-                        lineColor = Color.Cyan;
+                        lineColor = ConsoleColor.Cyan;
                         break;
                 }
 
-                _logPanel.AddLogText(formattedMessage, lineColor);
+                if (_logPaused)
+                {
+                    _pendingLogs.Add(new Tuple<ConsoleColor, string>(lineColor, formattedMessage));
+                }
+                else
+                {
+                    Console.ForegroundColor = lineColor;
+                    Console.WriteLine(formattedMessage);
+                }
 
                 // Telegram.
-                if(_telegramHelper != null)
+                if (_telegramHelper != null)
                 {
                     if (type <= _telegramHelper.LogType)
                         _telegramHelper.SendMessage(formattedMessage);
@@ -434,36 +292,61 @@ namespace CommonLib.Server
         {
             while (_running)
             {
-                if (_closeRequested)
-                    _mainForm.Close();
-
-                UpdatePendingStatus();
-
-                Application.DoEvents();
-
                 Thread.Sleep(10);
-            }
-        }
 
-        private void UpdatePendingStatus()
-        {
-            if (_pendingStatusUpdate.Count > 0)
-            {
-                lock (_pendingStatusUpdate)
+                if (!_pendingLogs.IsEmpty)
                 {
-                    foreach (var pair in _pendingStatusUpdate)
+                    while (_pendingLogs.Count > 0)
                     {
-                        _statusBar.Panels[pair.Key].Text = pair.Value;
+                        if (_pendingLogs.TryTake(out var tuple))
+                        {
+                            Console.ForegroundColor = tuple.Item1;
+                            Console.WriteLine(tuple.Item2);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
+                }
 
-                    _pendingStatusUpdate.Clear();
+                if (Console.KeyAvailable)
+                {
+                    var key = Console.ReadKey(true);
+
+                    if (key.Key == ConsoleKey.Escape)
+                    {
+                        Quit();
+                    }
+                    else if (key.Key == ConsoleKey.F1)
+                    {
+                        _logPaused = true;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.Write("Command: ");
+                        var cmd = Console.ReadLine().Split(' ');
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        _logPaused = false;
+
+                        if (cmd.Length == 0)
+                        {
+                            continue;
+                        }
+
+                        if (cmd[0] == "log")
+                        {
+                            HandleLogCommand(cmd);
+                        }
+                        else
+                        {
+                            ProcessCommand(cmd);
+                        }
+                    }
                 }
             }
-        }
 
-        protected void ClearConsole()
-        {
-            _logPanel.Clear();
+            Environment.Exit(0);
         }
     }
 }

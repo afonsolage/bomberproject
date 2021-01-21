@@ -89,10 +89,10 @@ namespace RoomServer.Server
             if (!base.Init())
                 return false;
 
-            for (var i = 0; i < (int)StatusInfo.MAX; i++)
-            {
-                AddStatusInfo();
-            }
+            //for (var i = 0; i < (int)StatusInfo.MAX; i++)
+            //{
+            //    AddStatusInfo();
+            //}
 
             CLog.D("    _____   ____   ____  __  __  _____ ______ _______      ________ _____  ");
             CLog.D("   |  __ \\ / __ \\ / __ \\|  \\/  |/ ____|  ____|  __ \\ \\    / /  ____|  __ \\ ");
@@ -309,8 +309,8 @@ namespace RoomServer.Server
 
             var playerCount = _roomManager.PlayerCount();
 
-            SetStatusInfo((int)StatusInfo.PlayerCount, string.Format("Players: {0}", playerCount));
-            SetStatusInfo((int)StatusInfo.RoomCount, string.Format("Rooms: {0}", _roomManager.Count()));
+            //SetStatusInfo((int)StatusInfo.PlayerCount, string.Format("Players: {0}", playerCount));
+            //SetStatusInfo((int)StatusInfo.RoomCount, string.Format("Rooms: {0}", _roomManager.Count()));
 
             LobbyClient.Send(new LR_USER_COUNT_NFY()
             {

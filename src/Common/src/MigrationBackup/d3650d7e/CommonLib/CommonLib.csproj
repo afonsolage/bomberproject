@@ -41,8 +41,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningsAsErrors>;NU1605</WarningsAsErrors>
-    <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugTest|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +52,21 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.12\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NBug, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBug.1.2.2\lib\net40-client\NBug.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\packages\protobuf-net.2.3.17\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -73,6 +86,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Telegram.Bot, Version=14.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Telegram.Bot.14.10.0\lib\net45\Telegram.Bot.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\Connection.cs" />
@@ -93,6 +109,7 @@
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Networking\Packet.cs" />
     <Compile Include="Server\BaseServer.cs" />
+    <Compile Include="Server\LogComponent.cs" />
     <Compile Include="Server\MainLoopServer.cs" />
     <Compile Include="Test\Main.cs" />
     <Compile Include="Util\AesHelper.cs" />
@@ -110,37 +127,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Google.Protobuf">
-      <Version>3.6.1</Version>
-    </PackageReference>
-    <PackageReference Include="MySql.Data">
-      <Version>8.0.12</Version>
-    </PackageReference>
-    <PackageReference Include="NBug">
-      <Version>1.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="protobuf-net">
-      <Version>2.3.17</Version>
-    </PackageReference>
-    <PackageReference Include="Telegram.Bot">
-      <Version>14.10.0</Version>
-    </PackageReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == DebugServer (
-    COPY /Y /B *.dll ..\..\..\..\lib\
-    COPY /Y /B *.pdb ..\..\..\..\lib\
-)
+    <PostBuildEvent>if $(ConfigurationName) == DebugServer COPY /Y /B *.dll ..\..\..\..\lib\
 
-
-if $(ConfigurationName) == DebugClient (
-    COPY /Y /B CommonLib.dll ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\CommonLib.dll
-    COPY /Y /B CommonLib.pdb ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\CommonLib.pdb
-    COPY /Y /B protobuf-net.dll ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\protobuf-net.dll
-)</PostBuildEvent>
+if $(ConfigurationName) == DebugClient COPY /Y /B CommonLib.dll ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\CommonLib.dll
+if $(ConfigurationName) == DebugClient COPY /Y /B protobuf-net.dll ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\protobuf-net.dll
+if $(ConfigurationName) == DebugClient COPY /Y /B CommonLib.pdb ..\..\..\..\..\Client\MuitoBomBer\Assets\Scripts\Engine\Plugin\CommonLib.pdb</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
