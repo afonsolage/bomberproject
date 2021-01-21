@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DBServer": {
+      "commandName": "Project",
+      "commandLineArgs": "2",
+      "workingDirectory": "D:\\BomberProject\\server\\DBServer\\"
+    }
+  }
+}

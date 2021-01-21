@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "LobbyServer": {
+      "commandName": "Project",
+      "commandLineArgs": "3",
+      "workingDirectory": "D:\\BomberProject\\server\\LobbyServer\\"
+    }
+  }
+}

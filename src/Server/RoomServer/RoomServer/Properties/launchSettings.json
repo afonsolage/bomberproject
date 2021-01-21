@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "RoomServer": {
+      "commandName": "Project",
+      "commandLineArgs": "1",
+      "workingDirectory": "D:\\BomberProject\\server\\RoomServer\\"
+    }
+  }
+}

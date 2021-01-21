@@ -111,14 +111,8 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf">
-      <Version>3.6.1</Version>
-    </PackageReference>
     <PackageReference Include="MySql.Data">
       <Version>8.0.12</Version>
-    </PackageReference>
-    <PackageReference Include="NBug">
-      <Version>1.2.2</Version>
     </PackageReference>
     <PackageReference Include="protobuf-net">
       <Version>2.3.17</Version>
@@ -130,8 +124,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == DebugServer (
-    COPY /Y /B *.dll ..\..\..\..\lib\
-    COPY /Y /B *.pdb ..\..\..\..\lib\
+    COPY /Y /B *.* ..\..\..\..\lib\
 )
 
 

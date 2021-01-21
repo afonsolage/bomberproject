@@ -66,20 +66,20 @@ namespace CommonLib.Server
         {
             /* NBug configuration. */
 
-            // Attach exception handlers after all configuration is done
-            AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
-            TaskScheduler.UnobservedTaskException += NBug.Handler.UnobservedTaskException;
+            //// Attach exception handlers after all configuration is done
+            //AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
+            //TaskScheduler.UnobservedTaskException += NBug.Handler.UnobservedTaskException;
 
-            // Check if path exits, if not, let to create.
-            string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\Exceptions";
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            //// Check if path exits, if not, let to create.
+            //string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\Exceptions";
+            //if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-            // Settings
-            NBug.Settings.MiniDumpType = NBug.Enums.MiniDumpType.Full;
-            NBug.Settings.StoragePath = path;
-            NBug.Settings.UIMode = NBug.Enums.UIMode.None;
-            NBug.Settings.ExitApplicationImmediately = false;
-            NBug.Settings.SleepBeforeSend = 0;
+            //// Settings
+            //NBug.Settings.MiniDumpType = NBug.Enums.MiniDumpType.Full;
+            //NBug.Settings.StoragePath = path;
+            //NBug.Settings.UIMode = NBug.Enums.UIMode.None;
+            //NBug.Settings.ExitApplicationImmediately = false;
+            //NBug.Settings.SleepBeforeSend = 0;
 
             return true;
         }
